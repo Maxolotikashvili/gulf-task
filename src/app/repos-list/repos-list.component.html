@@ -1,0 +1,10 @@
+<div class="repos-list-component-wrapper">
+
+    
+    <input type="search" [formControl]="searchControl" placeholder="Search gihtub repos here">
+    <div *ngIf="isLoading">...Loading</div>
+    
+    <div *ngFor="let repo of githubReposList">
+        <div> {{ repo.owner.login }}</div>
+    </div>
+</div>

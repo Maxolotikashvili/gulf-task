@@ -1,0 +1,21 @@
+.repos-list-component-wrapper {
+    height: 100%;
+    background: #282a2f;
+
+    input {
+        width: 500px;
+        background: #414649;
+        border: none;
+        padding: 15px;
+        border-radius: 20px;
+        color: #b5b9bc;
+    }
+    
+    input::placeholder {
+        color: #b5b9bc;
+    }
+
+    input:focus {
+        outline: none;
+    }
+}
