@@ -43,7 +43,6 @@ $repo-widget-width: 80%;
             border: none;
             padding: 15px 15px 15px 50px;
             border-radius: 20px;
-            color: #b5b9bc;
         }
 
         input::placeholder {
@@ -59,7 +58,6 @@ $repo-widget-width: 80%;
             top: 50%;
             left: 20px;
             transform: translateY(-50%);
-            color: #b5b9bc;
         }
     }
 
@@ -74,34 +72,61 @@ $repo-widget-width: 80%;
         background: #35373d;
         border-radius: 15px;
 
-        .results-count {
+        .error-message {    
+            @include position-center();
+        }
+
+        .heading-format-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
-            color: #93989e;
+            padding: 5px;
+
+            .results-count {
+                color: #93989e;
+            }
+
+            .view-format-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                button {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    height: fit-content;
+                    height: 20px;
+
+                    svg {
+                        width: 25px;
+                        color: #ffffff;
+                    }
+                }
+            }
         }
 
         .repo-wrapper {
             width: 100%;
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr;
             overflow: auto;
             gap: 10px;
+            transition: all 0.3s ease;
+
 
             .repo {
-                width: $repo-widget-width / 4.3;
-                aspect-ratio: 1/1;
                 color: #22272e;
                 border: none;
                 border-radius: 10px;
-                cursor: pointer;
                 transition: all 0.2s ease;
+                cursor: pointer;
 
                 .github-background {
                     @include flex-center();
                     font-size: 44px;
-                    height: 50%;
                     background-color: $primary-color;
-                    border-top-right-radius: inherit;
-                    border-top-left-radius: inherit;
                     transition: inherit;
                 }
 
@@ -112,10 +137,8 @@ $repo-widget-width: 80%;
                     align-items: flex-start;
                     justify-content: center;
                     gap: 5px;
-                    height: 50%;
                     background: #ffffff;
-                    border-bottom-left-radius: inherit;
-                    border-bottom-right-radius: inherit;
+
                     transition: inherit;
 
                     .details-hoverable {
@@ -142,6 +165,27 @@ $repo-widget-width: 80%;
                     overflow: hidden;
                 }
             }
+        }
+
+        .card {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+
+            .repo {
+                aspect-ratio: 1/1;
+
+                .github-background {
+                    height: 50%;
+                    border-top-right-radius: inherit;
+                    border-top-left-radius: inherit;
+                }
+
+                .description-wrapper {
+                    height: 50%;
+                    border-bottom-left-radius: inherit;
+                    border-bottom-right-radius: inherit;
+                }
+            }
 
             .repo:hover {
                 .github-background {
@@ -160,6 +204,44 @@ $repo-widget-width: 80%;
                     .repo-owner,
                     .repo-name {
                         transform: scale(0);
+                    }
+                }
+            }
+        }
+
+        .tabular {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+
+            .repo {
+                display: flex;
+
+                .github-background {
+                    width: 10%;
+                    border-top-left-radius: inherit;
+                    border-bottom-left-radius: inherit;
+                }
+
+                .description-wrapper {
+                    position: relative;
+                    width: 90%;
+                    padding: 10px;
+                    background: #ffffff;
+                    border-top-right-radius: inherit;
+                    border-bottom-right-radius: inherit;
+                    transition: inherit;
+                }
+            }
+
+            .repo:hover {
+                .description-wrapper {
+
+                    .details-hoverable {
+                        opacity: 1;
+                        z-index: 11;
+                    }
+                    
+                    .description, .repo-owner, .repo-name {
+                        opacity: 0;
                     }
                 }
             }
@@ -207,6 +289,7 @@ $repo-widget-width: 80%;
 
                 button:disabled {
                     color: #757575;
+                    cursor: default;
                 }
 
                 button:not(:disabled):hover {

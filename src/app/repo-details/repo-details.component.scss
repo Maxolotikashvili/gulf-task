@@ -33,6 +33,10 @@ $list-color: #8989ff;
     padding: 10px;
     gap: 10px;
 
+    .error-message {
+        @include position-center();
+    }
+
     .owner-wrapper {
         display: flex;
         justify-content: space-between;
@@ -89,4 +93,17 @@ $list-color: #8989ff;
         bottom: 3%;
         left: 3%;
     }
+}
+
+.back-button {
+    margin-top: 10px;
+    border: none;
+    background: none;
+    padding: 10px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background: rgba(0, 0, 0, 0.198);
 }

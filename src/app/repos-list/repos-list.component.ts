@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { GithubService } from '../services/github.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, finalize, fromEvent, max, switchMap, takeUntil, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, finalize, map, Observable, Subject, Subscription, switchMap, takeUntil, tap } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { GithubRepo, GithubSearchResponse } from '../models/github-repo.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,20 +17,25 @@ import { TotalPagesPipe } from '../pipes/total-pages.pipe';
   templateUrl: './repos-list.component.html',
   styleUrl: './repos-list.component.scss'
 })
-export class ReposListComponent implements OnInit {
+export class ReposListComponent implements OnInit, OnDestroy {
   private githubService = inject(GithubService);
 
-  public searchControl: FormControl = new FormControl('');
-  public githubReposList!: GithubRepo[];
-  public githubReposListPerPage!: GithubRepo[];
-  public totalNumberOfGitRepos!: number;
-  public totalShowedRepos!: number;
-  public maxReposPerPage!: number;
-  public prefferedReposPerPage!: number;
-  public selectedPage: number = 1;
-  public isLoading!: boolean;
+  private destroy$: Subject<void> = new Subject();
 
-  public fontawesomeIcons = {
+  public searchControl: FormControl = new FormControl('');
+  public githubReposList: GithubRepo[] = [];
+  public githubReposListPerPage!: GithubRepo[];
+  public totalNumberOfGitRepos: number = 0;
+  public totalShowedRepos: number = 0;
+  public maxReposPerPage: number = 0;
+  public prefferedReposPerPage: number = 30;
+  public selectedPage: number = 1;
+  public isIncompleteResult: boolean = false;
+  public isLoading: boolean = false;
+  public isError: boolean = false;
+  public displayFormat: 'card' | 'tabular' = 'card';
+
+  public icons = {
     magnifyingGlass: faMagnifyingGlass,
     github: faGithub
   }
@@ -47,22 +52,25 @@ export class ReposListComponent implements OnInit {
       distinctUntilChanged(),
       filter((value) => value.trim() !== ''),
       tap(() => this.isLoading = true),
-      switchMap((value) => this.getSearchResults(value))
-    ).subscribe({
+      switchMap((value) => this.getSearchResults(value)),
+      takeUntil(this.destroy$)
+    )
+    .subscribe({
       next: (response) => {
         this.handleGithubResponse(response);
       },
 
       error: (error) => {
         console.error(error);
+        this.isError = true;
       }
     })
   }
 
   public handleGithubResponse(response: GithubSearchResponse) {
-    console.log(response);
     this.githubReposList = response.items;
     this.githubReposListPerPage = response.items;
+    this.isIncompleteResult = response.incomplete_results;
     this.totalNumberOfGitRepos = response.total_count;
     this.maxReposPerPage = this.githubService.reposPerPage;
 
@@ -91,17 +99,23 @@ export class ReposListComponent implements OnInit {
     const page = state === 'next' ? 1 : -1;
     this.selectedPage += page;
     this.isLoading = true;
-    this.getSearchResults().subscribe({
+    this.getSearchResults().pipe(takeUntil(this.destroy$)).subscribe({
       next: (res) => {
         this.handleGithubResponse(res);
       },
       error: (error) => {
         console.error(error);
+        this.isError = true
       }
     })
   }
 
-  public trackByRepo(index: number, repo: GithubRepo) {
+  public trackById(index: number, repo: GithubRepo) {
     return repo.id;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
