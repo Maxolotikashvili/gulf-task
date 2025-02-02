@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+$default-text-color: #99a2ad;
+$default-font: "Plus Jakarta Sans", serif;
+
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin position-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.gf-text-xs {
+    font-size: 12.5px;
+}
+
+.gf-text-s {
+    font-size: 14px;
+}
+
+.gf-text-m {
+    font-size: 16px;
+}
+
+.gf-text-l {
+    font-size: 20px;
+}
+
+.gf-text-xs,
+.gf-text-s,
+.gf-text-m,
+.gf-text-l {
+    font-family: $default-font;
+}
+
+.gf-text-xs,
+.gf-text-s,
+.gf-text-m,
+.gf-text-l,
+.gf-text-light,
+.gf-text-regular,
+.gf-text-semibold {
+    color: $default-text-color;
+}
+
+.gf-text-light {
+    font-weight: 300;
+    color: $default-text-color;
+}
+
+.gf-text-regular {
+    font-weight: 400;
+    color: $default-text-color;
+}
+
+.gf-text-semibold {
+    font-weight: 600;
+    color: $default-text-color;
+}
+
+.gf-text-bold {
+    font-weight: 800;
+    color: $default-text-color;
+}
+
+.gf-text-marked {
+    color: #8989ff;
+}
+
+.gf-text-dark {
+    color: #31333b;
+}

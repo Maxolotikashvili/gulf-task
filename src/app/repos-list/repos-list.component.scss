@@ -1,21 +1,218 @@
+@use '../styles/gulf-styles.scss' as *;
+
+$repo-hover-background-color: #30353e;
+$primary-color: #b278fd;
+$repo-widget-width: 80%;
+
 .repos-list-component-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-flow: column;
+    gap: 10px;
+    align-items: center;
     height: 100%;
-    background: #282a2f;
 
-    input {
-        width: 500px;
-        background: #414649;
-        border: none;
-        padding: 15px;
-        border-radius: 20px;
-        color: #b5b9bc;
-    }
-    
-    input::placeholder {
-        color: #b5b9bc;
+    .title-wrapper {
+        display: flex;
+        gap: 5px;
+
+        h3 {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            .github {
+                color: #ffffff;
+                font-weight: 800;
+                letter-spacing: 0.8px;
+            }
+        }
+
+        fa-icon {
+            font-size: 30px;
+            color: $primary-color;
+        }
     }
 
-    input:focus {
-        outline: none;
+    .search-input-wrapper {
+        position: relative;
+
+        input {
+            width: 550px;
+            background: #414649;
+            border: none;
+            padding: 15px 15px 15px 50px;
+            border-radius: 20px;
+            color: #b5b9bc;
+        }
+
+        input::placeholder {
+            color: #b5b9bc;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        fa-icon {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            color: #b5b9bc;
+        }
+    }
+
+    .repos-widget-wrapper {
+        position: relative;
+        display: flex;
+        flex-flow: column;
+        width: $repo-widget-width;
+        height: $repo-widget-width;
+        padding: 10px;
+        gap: 5px;
+        background: #35373d;
+        border-radius: 15px;
+
+        .results-count {
+            margin-bottom: 20px;
+            color: #93989e;
+        }
+
+        .repo-wrapper {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            overflow: auto;
+            gap: 10px;
+
+            .repo {
+                width: $repo-widget-width / 4.3;
+                aspect-ratio: 1/1;
+                color: #22272e;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                .github-background {
+                    @include flex-center();
+                    font-size: 44px;
+                    height: 50%;
+                    background-color: $primary-color;
+                    border-top-right-radius: inherit;
+                    border-top-left-radius: inherit;
+                    transition: inherit;
+                }
+
+                .description-wrapper {
+                    position: relative;
+                    display: flex;
+                    flex-flow: column;
+                    align-items: flex-start;
+                    justify-content: center;
+                    gap: 5px;
+                    height: 50%;
+                    background: #ffffff;
+                    border-bottom-left-radius: inherit;
+                    border-bottom-right-radius: inherit;
+                    transition: inherit;
+
+                    .details-hoverable {
+                        @include position-center();
+                        opacity: 0;
+                        color: $primary-color;
+                        z-index: -1;
+                        transition: inherit;
+                    }
+
+                    .description,
+                    .repo-owner,
+                    .repo-name {
+                        max-width: 100%;
+                        padding: 0 5px;
+                        color: #22272e;
+                        transition: inherit;
+                    }
+                }
+
+                .text-overflow {
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+            }
+
+            .repo:hover {
+                .github-background {
+                    height: 45%;
+                }
+
+                .description-wrapper {
+                    height: 55%;
+
+                    .details-hoverable {
+                        opacity: 1;
+                        z-index: 11;
+                    }
+
+                    .description,
+                    .repo-owner,
+                    .repo-name {
+                        transform: scale(0);
+                    }
+                }
+            }
+        }
+    }
+
+    .pagination-wrapper {
+        width: $repo-widget-width;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding-inline: 10px;
+
+            select {
+                padding: 5px 10px;
+                border-radius: 8px;
+            }
+        }
+
+        .page {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            .next-previous-buttons-wrapper {
+                display: flex;
+                gap: 2px;
+
+                button {
+                    width: 35px;
+                    height: 35px;
+                    border: none;
+                    background: none;
+                    border-radius: 50%;
+                    font-size: 18px;
+                    color: #ffffff;
+                    transition: background 0.1s linear;
+                    cursor: pointer;
+                }
+
+                button:disabled {
+                    color: #757575;
+                }
+
+                button:not(:disabled):hover {
+                    background: rgb(56, 56, 56);
+                }
+            }
+        }
     }
 }

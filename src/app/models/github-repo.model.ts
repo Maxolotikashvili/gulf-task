@@ -14,12 +14,25 @@ export interface GithubRepo {
     fork: boolean,
     url: string,
     language: string,
+    allow_forking: boolean,
+    topics: string[],
+    license: License,
+    watchers_count: number,
+    score: number,
+    forks: number,
+    has_issues: boolean
 }
 
 export interface GithubRepoOwner {
     login: string,
     id: number,
     avatar_url: string,
-    url: string,
+    html_url: string,
     repos_url: string
+}
+
+export interface License {
+    key: string,
+    name: string,
+    url: string
 }

@@ -1,1 +1,58 @@
-<p>repo-details works!</p>
+<div class="repo-wrapper" *ngIf="repo$ | async as repo">
+    <div class="owner-wrapper">
+        <div class="profile-photo-wrapper">
+            <img [src]="repo.owner.avatar_url" alt="Owner">
+            <span class="gf-text-s gf-text-semibold">{{repo.owner.login}}</span>
+        </div>
+
+        <a class="gf-text-s gf-text-marked" [href]="repo.owner.html_url" target="_blank">Visit profile</a>
+    </div>
+
+    <div class="name-wrapper">
+        <span class="gf-text-s gf-text-marked">Repository Name: </span>
+        <span class="gf-text-s">{{repo.name}}</span>
+    </div>
+
+    <div class="language-wrapper" *ngIf="repo.language">
+        <span class="gf-text-s gf-text-marked">Language: </span>
+        <span class="gf-text-s">{{repo.language}}</span>
+    </div>
+    
+    <p class="gf-text-s" *ngIf="repo.description">
+        <span class="gf-text-marked">Description: </span> 
+        <span>{{repo.description}}</span>
+    </p>
+
+    <div class="license-wrapper" *ngIf="repo.license">
+        <span class="gf-text-s gf-text-marked">License: </span>
+        <span class="gf-text-s">{{repo.license.name}}</span>
+    </div>
+
+    <div class="forks-wrapper" *ngIf="repo.forks">
+        <span class="gf-text-s gf-text-marked">Forks: </span>
+        <span class="gf-text-s">{{repo.forks}}</span>
+    </div>
+
+    <div class="score-wrapper">
+        <span class="gf-text-s gf-text-marked">Score: </span>
+        <span class="gf-text-s">{{repo.score}}</span>
+    </div>
+
+    <div class="watchers-wrapper">
+        <span class="gf-text-s gf-text-marked">Watchers: </span>
+        <span class="gf-text-s">{{repo.watchers_count}}</span>
+    </div>
+    
+    <div class="issues" *ngIf="repo.has_issues">
+        <fa-icon class="gf-text-marked" [icon]="icons.exclamationMark"></fa-icon>
+        <span class="gf-text-s">Code has issues</span>
+    </div>
+
+    <div class="forking-allowed-wrapper" *ngIf="repo.allow_forking">
+        <fa-icon class="gf-text-marked" [icon]="icons.fork"></fa-icon>
+        <span class="gf-text-s">Forking is allowed</span>
+    </div>
+
+    <a class="repo-github gf-text-s gf-text-marked" [href]="repo.html_url" target="_blank">View on Github</a>
+    <fa-icon class="fork gf-text-s gf-text-marked" [icon]="icons.fork" *ngIf="repo.fork"></fa-icon>
+</div>

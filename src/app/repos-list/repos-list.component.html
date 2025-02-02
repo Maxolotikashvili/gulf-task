@@ -1,10 +1,66 @@
 <div class="repos-list-component-wrapper">
+    <div class="title-wrapper">
+        <h3 class="gf-text-l gf-text-regular">
+            <span class="github">Github</span>Search
+        </h3>
+        <fa-icon [icon]="fontawesomeIcons.github"></fa-icon>
+    </div>
 
-    
-    <input type="search" [formControl]="searchControl" placeholder="Search gihtub repos here">
-    <div *ngIf="isLoading">...Loading</div>
-    
-    <div *ngFor="let repo of githubReposList">
-        <div> {{ repo.owner.login }}</div>
+    <div class="search-input-wrapper">
+        <input type="search" class="gf-text-s" [formControl]="searchControl" name="search"
+            placeholder="Search public github repos here">
+        <fa-icon [icon]="fontawesomeIcons.magnifyingGlass"></fa-icon>
+    </div>
+
+    <div class="repos-widget-wrapper">
+        <ng-container *ngIf="githubReposListPerPage">
+            <span class="results-count gf-text-m"> {{totalNumberOfGitRepos}} Matching results<span
+                    *ngIf="githubReposListPerPage.length > 0">:</span></span>
+            <div class="repo-wrapper">
+                <a [routerLink]="['/repo-details', repo.id]" class="repo" *ngFor="let repo of githubReposListPerPage; trackBy: trackByRepo">
+                    <div class="github-background">
+                        <fa-icon [icon]="fontawesomeIcons.github"></fa-icon>
+                    </div>
+                    <div class="description-wrapper">
+                        <span class="details-hoverable gf-text-xs gf-text-regular">View details</span>
+                        <p class="repo-owner text-overflow">
+                            <span class="gf-text-xs gf-text-semibold gf-text-marked">Owner: </span>
+                            <span class="gf-text-xs gf-text-dark">{{repo.owner.login}}</span>
+                        </p>
+                        <p class="repo-name gf-text-xs gf-text-regular text-overflow">
+                           <span class="gf-text-xs gf-text-semibold gf-text-marked">Name: </span> 
+                           <span class="gf-text-xs gf-text-dark">{{repo.name}}</span>
+                        </p>
+                        <p class="description gf-text-xs text-overflow">
+                            <span class="gf-text-xs gf-text-semibold gf-text-marked">Description: </span> 
+                            <span class="gf-text-xs gf-text-dark">{{repo.description}}</span>
+                        </p>
+                    </div>
+                </a>
+            </div>
+        </ng-container>
+        <app-loader *ngIf="isLoading"></app-loader>
+    </div>
+
+    <div class="pagination-wrapper" *ngIf="maxReposPerPage">
+        <div class="pagination">
+            <label for="numberOfRepos" class="gf-text-s">Items per page:</label>
+            <select name="numberOfRepos" id="numberOfRepos" value="50"
+                (change)="updateSelectedNumberOfReposPerPage(+select.value)" #select>
+                <option [value]="maxReposPerPage">{{maxReposPerPage}}</option>
+                <option value="25">25</option>
+                <option value="10">10</option>
+                <option value="5">5</option>
+            </select>
+        </div>
+
+        <div class="page">
+            <p class="gf-text-s">page {{selectedPage}}/{{totalNumberOfGitRepos | totalPages: maxReposPerPage}}</p>
+
+            <div class="next-previous-buttons-wrapper">
+                <button [disabled]="selectedPage === 1" (click)="navigateToPages('prev')">&lt;</button>
+                <button [disabled]="selectedPage >= (totalNumberOfGitRepos | totalPages: maxReposPerPage)" (click)="navigateToPages('next')">&gt;</button>
+            </div>
+        </div>
     </div>
 </div>

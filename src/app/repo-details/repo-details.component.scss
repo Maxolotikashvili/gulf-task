@@ -1,0 +1,92 @@
+@use '../styles/gulf-styles.scss' as *;
+
+$list-color: #8989ff;
+
+@mixin fa-icon-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    fa-icon {
+        @include flex-center();
+        width: 20px;
+        height: 20px;
+        border: 1px solid $list-color;
+        border-radius: 50%;
+    }
+}
+
+@mixin link {
+    padding: 10px 15px;
+    background: #3a404a;
+    border-radius: 20px;
+    transition: background 0.15s ease
+}
+
+.repo-wrapper {
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    width: 400px;
+    background-color: #30353e;
+    border-radius: 10px;
+    padding: 10px;
+    gap: 10px;
+
+    .owner-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+
+        .profile-photo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            img {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+            }
+        }
+
+        a {
+            @include link();
+        }
+
+        a:hover {
+            background: #373d46;
+        }
+    }
+
+    .repo-github {
+        width: fit-content;
+        margin: auto;
+        @include link();
+        margin-top: 20px;
+    }
+
+    .repo-github:hover {
+        background: #373d46;
+    }
+
+    .issues {
+        margin-top: 10px;
+        @include fa-icon-wrapper();
+    }
+
+    .forking-allowed-wrapper {
+        @include fa-icon-wrapper();
+
+        fa-icon {
+            font-size: 10px;
+        }
+    }
+
+    .fork {
+        position: absolute;
+        bottom: 3%;
+        left: 3%;
+    }
+}
